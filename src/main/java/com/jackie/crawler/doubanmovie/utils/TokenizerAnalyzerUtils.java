@@ -5,7 +5,9 @@ import org.apache.commons.io.FileUtils;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class TokenizerAnalyzerUtils {
 
-    public TokenizerAnalyzerUtils(){
+    public TokenizerAnalyzerUtils() {
 
     }
 
@@ -24,18 +26,18 @@ public class TokenizerAnalyzerUtils {
     }
 
     public static String getAnalyzerResult(String input) {
-        StringReader sr=new StringReader(input);
-        IKSegmenter ik=new IKSegmenter(sr, true);//true is use smart
-        Lexeme lex=null;
+        StringReader sr = new StringReader(input);
+        IKSegmenter ik = new IKSegmenter(sr, true);//true is use smart
+        Lexeme lex = null;
         List<String> stopWordsList = getStopWordsList();
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            while((lex=ik.next())!=null){
-                if(stopWordsList.contains(lex.getLexemeText())) {
+            while (( lex = ik.next() ) != null) {
+                if (stopWordsList.contains(lex.getLexemeText())) {
                     continue;
                 }
-                stringBuilder.append(lex.getLexemeText() + Constants.BLANKSPACE);
+                stringBuilder.append(lex.getLexemeText() + Constants.BLANK_SPACE);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,11 +47,11 @@ public class TokenizerAnalyzerUtils {
     }
 
 
-    private static List<String> getStopWordsList(){
+    private static List<String> getStopWordsList() {
         List<String> stopWordList = null;
         File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/stopwords.dic").getPath());
         try {
-             stopWordList = FileUtils.readLines(stopWordFile, Constants.ENCODING);
+            stopWordList = FileUtils.readLines(stopWordFile, Constants.ENCODING);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("fail to load stop word dictionary");

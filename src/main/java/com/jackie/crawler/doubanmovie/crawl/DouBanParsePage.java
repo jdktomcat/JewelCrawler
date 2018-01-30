@@ -3,7 +3,6 @@ package com.jackie.crawler.doubanmovie.crawl;
 /**
  * Created by Jackie on 2016/9/24 0024.
  */
-
 import com.jackie.crawler.doubanmovie.constants.Constants;
 import com.jackie.crawler.doubanmovie.entity.Comments;
 import com.jackie.crawler.doubanmovie.entity.Movie;
@@ -12,13 +11,11 @@ import org.htmlparser.Parser;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.annotation.Resource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +25,7 @@ import java.util.regex.Pattern;
 public class DouBanParsePage {
 
     protected static Movie movie;
+
     protected static Comments comments;
 
     public static int movieId = 0;
@@ -46,7 +44,7 @@ public class DouBanParsePage {
         List<String> nextLinkList = new ArrayList<String>();
 
         int rowCount = 0;
-        sql1 = "select count(*) as rowCount from record";
+        sql1 = "SELECT count(*) AS rowCount FROM record";
         stmt1 = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
         rs1 = stmt1.executeQuery(sql1);
         if (rs1.next()) {
@@ -63,28 +61,28 @@ public class DouBanParsePage {
                     Node node = list.elementAt(i);
 
                     if (node instanceof LinkTag) {
-                        LinkTag link = (LinkTag) node;
+                        LinkTag link = (LinkTag)node;
                         String nextLink = link.extractLink();
-                        String mainUrl = Constants.MAINURL;
+                        String mainUrl = Constants.MAIN_URL;
 
                         if (nextLink.startsWith(mainUrl)) {
-                                //check if the link already exists in the database
-                                sql1 = "SELECT * FROM record WHERE URL = '" + nextLink + "'";
-                                stmt1 = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-                                rs1 = stmt1.executeQuery(sql1);
-                                if (rs1.next()) {
+                            //check if the link already exists in the database
+                            sql1 = "SELECT * FROM record WHERE URL = '" + nextLink + "'";
+                            stmt1 = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                            rs1 = stmt1.executeQuery(sql1);
+                            if (rs1.next()) {
 
-                                } else {
-                                    Pattern moviePattern = Pattern.compile(Constants.MOVIE_REGULAR_EXP);
-                                    Matcher movieMatcher = moviePattern.matcher(nextLink);
+                            } else {
+                                Pattern moviePattern = Pattern.compile(Constants.MOVIE_REGULAR_EXP);
+                                Matcher movieMatcher = moviePattern.matcher(nextLink);
 
-                                    Pattern commentPattern = Pattern.compile(Constants.COMMENT_REGULAR_EXP);
-                                    Matcher commentMatcher = commentPattern.matcher(nextLink);
+                                Pattern commentPattern = Pattern.compile(Constants.COMMENT_REGULAR_EXP);
+                                Matcher commentMatcher = commentPattern.matcher(nextLink);
 
-                                    if (movieMatcher.find() || commentMatcher.find()) {
-                                        nextLinkList.add(nextLink);
-                                    }
+                                if (movieMatcher.find() || commentMatcher.find()) {
+                                    nextLinkList.add(nextLink);
                                 }
+                            }
                         }
                     }
                 }
@@ -320,7 +318,6 @@ public class DouBanParsePage {
                             stmt = null;
                         }
                     }
-
                 }
             }
         }

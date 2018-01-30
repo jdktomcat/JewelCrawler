@@ -1,62 +1,49 @@
 package com.jackie.crawler.doubanmovie.ocr;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-
-import net.sourceforge.tess4j.Tesseract;
 
 public class ImageUtil {
-	
-//	public int getPiexPostion(int x, int y){
-//		
-//	}
-	
-	public static void main(String[] args){
-		try {
-			boolean load = true;
-			load = false;
-//			BufferedImage image = ImageIO.read(new URL("http://www.miitbeian.gov.cn/captcha.jpg")) ;
-//			if(load){
-//				ImageIO.write(image, "jpg", new File("E:/captcha.jpg") );
-//			}else{
-//				image = ImageIO.read(new File("D:\\爬虫测试\\yzm\\111.png")) ;
-//			}
-			BufferedImage image = ImageIO.read(new File("D:\\爬虫测试\\yzm\\11.jpg")) ;
-//			image = ImageUtil.grayFilter(image);
-			image = ImageUtil.binaryFilter(image);
-			image = ImageUtil.lineFilter(image);
-//			image = ImageUtil.lineFilter(image);
-//			image = ImageUtil.line2Filter(image);
-//			image = ImageUtil.point2Filter(image);
-//			image = ImageUtil.lineFilter(image);
-			image = ImageUtil.meanFilter(image);
-//			image = ImageUtil.lineFilter(image);
-//			image = ImageUtil.binaryFilter(image);
-			
-			
-			File imageFile = new File("E:/captcha5.jpg");
-//			imageFile = new File("E:/test/test.jpg");
-			
-			ImageIO.write(image, "jpg", imageFile);
-			
-			Tesseract tesseract = Tesseract.getInstance();
-			tesseract.setLanguage("eng");
-			String code = tesseract.doOCR(imageFile);
 
-			System.out.println(code);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void main(String[] args){
+//		try {
+//			boolean load = true;
+//			load = false;
+////			BufferedImage image = ImageIO.read(new URL("http://www.miitbeian.gov.cn/captcha.jpg")) ;
+////			if(load){
+////				ImageIO.write(image, "jpg", new File("E:/captcha.jpg") );
+////			}else{
+////				image = ImageIO.read(new File("D:\\爬虫测试\\yzm\\111.png")) ;
+////			}
+//			BufferedImage image = ImageIO.read(new File("D:\\爬虫测试\\yzm\\11.jpg")) ;
+////			image = ImageUtil.grayFilter(image);
+//			image = ImageUtil.binaryFilter(image);
+//			image = ImageUtil.lineFilter(image);
+////			image = ImageUtil.lineFilter(image);
+////			image = ImageUtil.line2Filter(image);
+////			image = ImageUtil.point2Filter(image);
+////			image = ImageUtil.lineFilter(image);
+//			image = ImageUtil.meanFilter(image);
+////			image = ImageUtil.lineFilter(image);
+////			image = ImageUtil.binaryFilter(image);
+//
+//
+////			File imageFile = new File("E:/captcha5.jpg");
+//////			imageFile = new File("E:/test/test.jpg");
+////
+////			ImageIO.write(image, "jpg", imageFile);
+////
+////			Tesseract tesseract = Tesseract.getInstance();
+////			tesseract.setLanguage("eng");
+////			String code = tesseract.doOCR(imageFile);
+////
+////			System.out.println(code);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 	
@@ -297,7 +284,6 @@ public class ImageUtil {
 	/**
 	 * 去除杂点、杂线
 	 * @param image
-	 * @param length
 	 * @return
 	 */
 	public static BufferedImage point2Filter(BufferedImage image){
@@ -386,7 +372,6 @@ public class ImageUtil {
 	/**
 	 * 去除杂点
 	 * @param image
-	 * @param sideLength
 	 * @return
 	 */
 	public static BufferedImage pointFilter(BufferedImage image){
@@ -429,7 +414,6 @@ public class ImageUtil {
 	/**
 	 * 去除杂点、杂线
 	 * @param image
-	 * @param length
 	 * @return
 	 */
 	public static BufferedImage line2Filter(BufferedImage image){
@@ -481,14 +465,14 @@ public class ImageUtil {
 				
 				if(left == right && left == 0 && up == down && up != 0 && self == 0){
 					//左右为黑 上下为白
-					setRGB(outImage, x, y, white.getRGB());//自己
+					setRGB(outImage, x, y, white.getRGB());
 				}else if(left == right && left != 0 && up == down && up == 0 && self == 0){
 					//上下为黑 左右为白
-					setRGB(outImage, x, y, white.getRGB());//自己
+					setRGB(outImage, x, y, white.getRGB());
 				}
 				else if(left == right && up == down && left == up && left != 0 && self == 0){
-//					//上下左右均为白色
-					setRGB(outImage, x, y, white.getRGB());//自己
+					//上下左右均为白色
+					setRGB(outImage, x, y, white.getRGB());
 				}
 				else{
 					int count = 0;
@@ -496,9 +480,9 @@ public class ImageUtil {
 					count = right != 0 ? count+1 : count;
 					count = up != 0 ? count+1 : count;
 					count = down != 0 ? count+1 : count;
-//					
+
 					if(count > 2){
-						setRGB(outImage, x, y, white.getRGB());//自己
+						setRGB(outImage, x, y, white.getRGB());
 					}else{
 						setRGB(outImage, x, y, black.getRGB());
 					}
@@ -514,7 +498,6 @@ public class ImageUtil {
 	/**
 	 * 去除杂点、杂线
 	 * @param image
-	 * @param length
 	 * @return
 	 */
 	public static BufferedImage lineFilter(BufferedImage image){
@@ -558,13 +541,9 @@ public class ImageUtil {
 					count = right != 0 ? count+1 : count;
 					count = up != 0 ? count+1 : count;
 					count = down != 0 ? count+1 : count;
-//					
 					if(count > 2){
 						setRGB(outImage, x, y, white.getRGB());
-					}else{
-//						setRGB(outImage, x, y, black.getRGB());
 					}
-					
 				}
 				
 			}
@@ -622,9 +601,11 @@ public class ImageUtil {
 				tg = color.getGreen();
 				tb = color.getBlue();
 				if (tr > means) {
-					tr = tg = tb = 255; // white
+					// white
+					tr = tg = tb = 255;
 				} else {
-					tr = tg = tb = 0; // black
+					// black
+					tr = tg = tb = 0;
 				}
 				outPixels[index] = (ta << 24) | (tr << 16) | (tg << 8) | tb;
 				outImage.setRGB(x, y, outPixels[index]);
@@ -635,8 +616,8 @@ public class ImageUtil {
 	//获取阈值
 	private static int getThreshold(int[] inPixels, int height, int width) {  
         // maybe this value can reduce the calculation consume;    
-        int inithreshold = 127;  
-        int finalthreshold = 0;  
+        int inithreshold = 127;
+        int finalthreshold = 0;
         int temp[] = new int[inPixels.length];  
         for(int index=0; index<inPixels.length; index++) {  
             temp[index] = (inPixels[index] >> 16) & 0xff;  
@@ -712,9 +693,7 @@ public class ImageUtil {
 	}
 	
 	private static Map<String, Integer> getRoundPiexls(BufferedImage image, int x, int y, int sideLength){
-		
 		Map<String, Integer> piexlMap = new HashMap<String, Integer>();
-		
 		if(sideLength == 2){
 			getRoundPiexls(image, x, y, piexlMap);
 			getRoundPiexls(image, x + 1, y, piexlMap);
@@ -723,15 +702,6 @@ public class ImageUtil {
 		}else{
 			getRoundPiexls(image, x, y, piexlMap);
 		}
-		
-//		int[] piexls = new int[piexlMap.size()];
-//		
-//		int i = 0;
-//		for (Map.Entry<String, Integer> entry: piexlMap.entrySet()) {
-//			piexls[i] = entry.getValue();
-//			i++;
-//		}
-		
 		return piexlMap;
 	}
 	
